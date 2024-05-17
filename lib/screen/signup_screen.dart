@@ -233,7 +233,7 @@ class SignupScreen extends StatelessWidget {
     required TextEditingController controller,
     required String label,
     required IconData icon,
-    bool obscureText = false,
+    bool obscureText = true,
     TextInputType keyboardType = TextInputType.text,
     String? Function(String?)? validator,
   }) {
