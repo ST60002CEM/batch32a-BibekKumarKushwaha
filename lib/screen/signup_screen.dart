@@ -1,3 +1,4 @@
+import 'package:final_assignment/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 171, 214, 244),
+      backgroundColor: const Color.fromARGB(255, 223, 233, 241),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -177,7 +178,11 @@ class SignupScreen extends StatelessWidget {
                     const SizedBox(height: 24.0),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                        );
                       },
                       child: RichText(
                         text: const TextSpan(
