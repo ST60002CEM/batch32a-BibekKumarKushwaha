@@ -132,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                           'assets/images/mac_logo.png',
                           Colors.black,
                           () {
-                            // Perform Apple login action
+                            // Perform Apple login action here
                           },
                         ),
                         const SizedBox(height: 24.0),
