@@ -28,7 +28,7 @@ class SignupScreen extends StatelessWidget {
                     child: Image.asset(
                       'assets/images/logo.png',
                       height: 100,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
