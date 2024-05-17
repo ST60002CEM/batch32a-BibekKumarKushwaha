@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Log In',
+                          'Log In Pannel',
                           style: TextStyle(
                             fontSize: 32.0,
                             fontWeight: FontWeight.bold,
