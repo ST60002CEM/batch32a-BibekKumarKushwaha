@@ -124,31 +124,31 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildSocialLoginButton(
-                              'assets/images/fb_logo.png',
-                              Colors.blue[800]!,
-                              () {
-                                // Perform Facebook login action
-                              },
-                            ),
-                            _buildSocialLoginButton(
-                              'assets/images/google_logo.png',
-                              Colors.red,
-                              () {
-                                // Perform Google login action
-                              },
-                            ),
-                            _buildSocialLoginButton(
-                              'assets/images/mac_logo.png',
-                              Colors.black,
-                              () {
-                                // Perform Apple login action here
-                              },
-                            ),
-                          ],
+                        _buildSocialLoginButton(
+                          'Log In with Facebook',
+                          'assets/images/fb_logo.png',
+                          Colors.blue[800]!,
+                          () {
+                            // Perform Facebook login action
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+                        _buildSocialLoginButton(
+                          'Log In with Google',
+                          'assets/images/google_logo.png',
+                          Colors.red,
+                          () {
+                            // Perform Google login action
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+                        _buildSocialLoginButton(
+                          'Log In with Apple',
+                          'assets/images/mac_logo.png',
+                          Colors.black,
+                          () {
+                            // Perform Apple login action here
+                          },
                         ),
                         const SizedBox(height: 24.0),
                         TextButton(
@@ -217,13 +217,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildSocialLoginButton(
-      String asset, Color color, VoidCallback onPressed) {
+      String text, String asset, Color color, VoidCallback onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         foregroundColor: color,
         backgroundColor: Colors.white,
         side: BorderSide(color: color),
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
         textStyle: TextStyle(fontSize: 16.0, color: color),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -231,11 +231,17 @@ class LoginScreen extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
             asset,
             height: 24.0,
             width: 24.0,
+          ),
+          const SizedBox(width: 8.0),
+          Text(
+            text,
+            style: TextStyle(color: color),
           ),
         ],
       ),
