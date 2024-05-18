@@ -128,7 +128,6 @@ class LoginScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _buildSocialLoginButton(
-                              'Log In with Facebook',
                               'assets/images/fb_logo.png',
                               Colors.blue[800]!,
                               () {
@@ -136,7 +135,6 @@ class LoginScreen extends StatelessWidget {
                               },
                             ),
                             _buildSocialLoginButton(
-                              'Log In with Google',
                               'assets/images/google_logo.png',
                               Colors.red,
                               () {
@@ -144,7 +142,6 @@ class LoginScreen extends StatelessWidget {
                               },
                             ),
                             _buildSocialLoginButton(
-                              'Log In with Apple',
                               'assets/images/mac_logo.png',
                               Colors.black,
                               () {
@@ -220,13 +217,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildSocialLoginButton(
-      String text, String asset, Color color, VoidCallback onPressed) {
+      String asset, Color color, VoidCallback onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         foregroundColor: color,
         backgroundColor: Colors.white,
         side: BorderSide(color: color),
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
         textStyle: TextStyle(fontSize: 16.0, color: color),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -234,17 +231,11 @@ class LoginScreen extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
             asset,
             height: 24.0,
             width: 24.0,
-          ),
-          const SizedBox(width: 8.0),
-          Text(
-            text,
-            style: TextStyle(color: color),
           ),
         ],
       ),
