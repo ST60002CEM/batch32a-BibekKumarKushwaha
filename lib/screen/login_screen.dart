@@ -98,23 +98,14 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 24.0),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.blue[800],
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 100.0),
-                            textStyle: const TextStyle(fontSize: 16.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          onPressed: () {
+                        _buildMainLoginButton(
+                          'Log In',
+                          Colors.blue[800]!,
+                          () {
                             if (_formKey.currentState!.validate()) {
                               // Perform login action
                             }
                           },
-                          child: const Text('Log In'),
                         ),
                         const SizedBox(height: 24.0),
                         Text(
@@ -214,6 +205,23 @@ class LoginScreen extends StatelessWidget {
       obscureText: obscureText,
       keyboardType: keyboardType,
       validator: validator,
+    );
+  }
+
+  Widget _buildMainLoginButton(
+      String text, Color color, VoidCallback onPressed) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: color,
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 100.0),
+        textStyle: const TextStyle(fontSize: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(text),
     );
   }
 
