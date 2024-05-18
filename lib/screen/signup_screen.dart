@@ -292,9 +292,10 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSuccessDialog(BuildContext context) {
+ Widget _buildSuccessDialog(BuildContext context) {
     return AlertDialog(
       title: const Text('Signup Successful'),
+      backgroundColor: const Color.fromARGB(255, 223, 233, 241), // Set background color here
       content: const SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
@@ -318,6 +319,7 @@ class SignupScreen extends StatelessWidget {
       ],
     );
   }
+
 
   void _showSuccessDialog(BuildContext context) {
     showDialog(
