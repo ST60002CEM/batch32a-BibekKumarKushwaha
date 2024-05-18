@@ -1,3 +1,4 @@
+import 'package:final_assignment/screen/dashboard_screen.dart';
 import 'package:final_assignment/screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -103,7 +104,12 @@ class LoginScreen extends StatelessWidget {
                           Colors.blue[800]!,
                           () {
                             if (_formKey.currentState!.validate()) {
-                              // Perform login action
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DashboardScreen(),
+                                ),
+                              );
                             }
                           },
                         ),
