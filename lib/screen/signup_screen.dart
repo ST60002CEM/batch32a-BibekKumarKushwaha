@@ -1,5 +1,5 @@
-import 'package:final_assignment/screen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'login_screen.dart'; // Import the login screen file
 
 class SignupScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -134,7 +134,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // Perform signup action
+                          _showSuccessDialog(context);
                         }
                       },
                       child: const Text('Sign Up'),
@@ -289,6 +289,42 @@ class SignupScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSuccessDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Signup Successful'),
+      content: const SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Your account has been successfully created.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        Center(
+          child: TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return _buildSuccessDialog(context);
+      },
     );
   }
 }
