@@ -307,7 +307,7 @@ class SignupScreen extends StatelessWidget {
       actions: <Widget>[
         Center(
           child: TextButton(
-            child: const Text('OK'),
+            child: const Text('OKAY'),
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.push(
