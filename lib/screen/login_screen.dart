@@ -82,12 +82,27 @@ class LoginScreen extends StatelessWidget {
                             return null;
                           },
                         ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              // Handle forgot password
+                            },
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 24.0),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.blue[800],
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 100.0),
                             textStyle: const TextStyle(fontSize: 16.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
@@ -109,31 +124,34 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
-                          'Log In with Facebook',
-                          'assets/images/fb_logo.png',
-                          Colors.blue[800]!,
-                          () {
-                            // Perform Facebook login action
-                          },
-                        ),
-                        const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
-                          'Log In with Google',
-                          'assets/images/google_logo.png',
-                          Colors.red,
-                          () {
-                            // Perform Google login action
-                          },
-                        ),
-                        const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
-                          'Log In with Apple',
-                          'assets/images/mac_logo.png',
-                          Colors.black,
-                          () {
-                            // Perform Apple login action here
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildSocialLoginButton(
+                              'Log In with Facebook',
+                              'assets/images/fb_logo.png',
+                              Colors.blue[800]!,
+                              () {
+                                // Perform Facebook login action
+                              },
+                            ),
+                            _buildSocialLoginButton(
+                              'Log In with Google',
+                              'assets/images/google_logo.png',
+                              Colors.red,
+                              () {
+                                // Perform Google login action
+                              },
+                            ),
+                            _buildSocialLoginButton(
+                              'Log In with Apple',
+                              'assets/images/mac_logo.png',
+                              Colors.black,
+                              () {
+                                // Perform Apple login action here
+                              },
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 24.0),
                         TextButton(
@@ -192,6 +210,8 @@ class LoginScreen extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
+        filled: true,
+        fillColor: Colors.white,
       ),
       obscureText: obscureText,
       keyboardType: keyboardType,
