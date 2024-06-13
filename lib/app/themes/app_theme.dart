@@ -1,86 +1,91 @@
-// import 'package:final_assignment/app/constants/theme_constant.dart';
-// import 'package:flutter/material.dart';
-// //import 'package:student_management_starter/app/constants/theme_constant.dart';
 
-// class AppTheme {
-//   AppTheme._();
+import 'package:flutter/material.dart';
 
-//   static getApplicationTheme(bool isDark) {
-//     return ThemeData(
-//       // change the theme according to the user preference
-//       colorScheme: isDark
-//           ? const ColorScheme.dark(
-//               primary: ThemeConstant.darkPrimaryColor,
-//             )
-//           : const ColorScheme.light(
-//               primary: Color.fromARGB(255, 17, 119, 20),
-//             ),
-//       brightness: isDark ? Brightness.dark : Brightness.light,
-//       fontFamily: 'Montserrat',
-//       useMaterial3: true,
+class AppTheme {
+  AppTheme._();
 
-//       // Change app bar color
-//       appBarTheme: const AppBarTheme(
-//         elevation: 0,
-//         backgroundColor: ThemeConstant.appBarColor,
-//         centerTitle: true,
-//         titleTextStyle: TextStyle(
-//           color: Colors.white,
-//           fontSize: 20,
-//         ),
-//       ),
+  static getApplicationTheme(bool isDark) {
+    return ThemeData(
+      // Change the theme according to the user preference
+      colorScheme: isDark
+          ? const ColorScheme.dark(
+              primary: Colors.blueGrey, // Dark theme primary color
+            )
+          : const ColorScheme.light(
+              primary: Colors.blue, // Light theme primary color
+            ),
+      brightness: isDark ? Brightness.dark : Brightness.light,
+      fontFamily: 'Arial', // Use a common font
 
-//       // Change elevated button theme
-//       elevatedButtonTheme: ElevatedButtonThemeData(
-//         style: ElevatedButton.styleFrom(
-//           elevation: 0,
-//           foregroundColor: Colors.white,
-//           backgroundColor: ThemeConstant.primaryColor,
-//           textStyle: const TextStyle(
-//             fontSize: 20,
-//           ),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(10),
-//           ),
-//         ),
-//       ),
+      // Change app bar color
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        backgroundColor: isDark ? Colors.blueGrey : Colors.blue,
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+      ),
 
-//       iconButtonTheme: IconButtonThemeData(
-//           style: IconButton.styleFrom(
-//         foregroundColor: Colors.white,
-//       )),
+      // Change elevated button theme
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          foregroundColor: Colors.white,
+          backgroundColor: isDark ? Colors.blueGrey : Colors.blue,
+          textStyle: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
 
-//       // Change text field theme
-//       inputDecorationTheme: const InputDecorationTheme(
-//         contentPadding: EdgeInsets.all(15),
-//         border: OutlineInputBorder(),
-//         labelStyle: TextStyle(
-//           fontSize: 20,
-//         ),
-//         errorBorder: OutlineInputBorder(
-//           borderSide: BorderSide(
-//             color: Colors.red,
-//           ),
-//         ),
-//         focusedBorder: OutlineInputBorder(
-//           borderSide: BorderSide(
-//             color: ThemeConstant.primaryColor,
-//           ),
-//         ),
-//       ),
-//       // Circular progress bar theme
-//       progressIndicatorTheme: const ProgressIndicatorThemeData(
-//         color: ThemeConstant.primaryColor,
-//       ),
-//       //Bottom navigation bar theme
-//       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-//         backgroundColor: Colors.lightGreen,
-//         selectedItemColor: Colors.white,
-//         unselectedItemColor: Colors.black,
-//         type: BottomNavigationBarType.fixed,
-//         elevation: 0,
-//       ),
-//     );
-//   }
-// }
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          foregroundColor: Colors.white,
+        ),
+      ),
 
+      // Change text field theme
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: const EdgeInsets.all(15),
+        border: const OutlineInputBorder(),
+        labelStyle: const TextStyle(
+          fontSize: 20,
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: isDark ? Colors.blueGrey : Colors.blue,
+          ),
+        ),
+      ),
+
+      // Circular progress bar theme
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: isDark ? Colors.blueGrey : Colors.blue,
+      ),
+
+      // Bottom navigation bar theme
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: isDark ? Colors.blueGrey : Colors.blue,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
+      ),
+    );
+  }
+}
