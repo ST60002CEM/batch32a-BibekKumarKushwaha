@@ -1,19 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:final_assignment/features/home/presentation/view/bottom_view/dashboard_view.dart';
+import 'package:final_assignment/features/home/presentation/view/bottom_view/profile_view.dart';
 
 class HomeView extends ConsumerStatefulWidget {
-  const HomeView({super.key});
+  const HomeView({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HomeViewState();
+  _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _screens = [
+    const DashboardView(),
+    Placeholder(), // Placeholder for Wishlist View
+    Placeholder(), // Placeholder for Cart View
+    const ProfileView(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('dashboard screen'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                // Implement your sliding menu functionality here
+              },
+            ),
+            const SizedBox(width: 16), // Adjust spacing as needed
+            Expanded(
+              child: Center(
+                child: Image.asset(
+                  'assets/images/logo.png', // Replace with your photo path
+                  height: AppBar().preferredSize.height - 12, // Adjust height
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16), // Adjust spacing as needed
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              // Handle profile button action
+            },
+          ),
+        ],
+      ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Wishlist',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
     );
   }

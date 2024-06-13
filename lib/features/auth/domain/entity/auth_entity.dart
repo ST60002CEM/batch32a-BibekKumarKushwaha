@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-//import 'package:student_management_starter/features/course/domain/entity/course_entity.dart';
+
 
 class AuthEntity extends Equatable {
   final String? id;
