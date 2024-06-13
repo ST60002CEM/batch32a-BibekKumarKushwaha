@@ -1,16 +1,23 @@
+import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
+import 'package:final_assignment/features/auth/presentation/view/login_view.dart';
+import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Import the login screen file
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignupScreen extends StatelessWidget {
+class RegisterView extends ConsumerStatefulWidget {
+  const RegisterView({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends ConsumerState<RegisterView> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
-  SignupScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +141,17 @@ class SignupScreen extends StatelessWidget {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          _showSuccessDialog(context);
+                          // Perform sign up action
+                          AuthEntity student = AuthEntity(
+                              fname: _firstNameController.text,
+                              lname: _lastNameController.text,
+                              phone: '1234567890',
+                              username: _emailController.text,
+                              password: _passwordController.text);
+
+                          ref
+                              .read(authViewModelProvider.notifier)
+                              .registerStudent(student);
                         }
                       },
                       child: const Text('Sign Up'),
@@ -181,7 +198,7 @@ class SignupScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
+                              builder: (context) => const LoginView()),
                         );
                       },
                       child: RichText(
@@ -312,7 +329,7 @@ class SignupScreen extends StatelessWidget {
               Navigator.of(context).pop();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                MaterialPageRoute(builder: (context) => const LoginView()),
               );
             },
           ),

@@ -1,14 +1,23 @@
-import 'package:final_assignment/screen/dashboard_screen.dart';
-import 'package:final_assignment/screen/signup_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:final_assignment/features/auth/presentation/view/register_view.dart';
+import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'package:final_assignment/features/home/presentation/view/home_view.dart';
 
-class LoginScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class LoginView extends ConsumerStatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  LoginScreen({super.key});
-
+  // LoginView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,12 +113,10 @@ class LoginScreen extends StatelessWidget {
                           Colors.blue[800]!,
                           () {
                             if (_formKey.currentState!.validate()) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const DashboardScreen(),
-                                ),
-                              );
+                              ref
+                                  .read(authViewModelProvider.notifier)
+                                  .loginStudent(_emailController.text,
+                                      _passwordController.text);
                             }
                           },
                         ),
@@ -154,7 +161,7 @@ class LoginScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignupScreen()),
+                                  builder: (context) => const RegisterView()),
                             );
                           },
                           child: RichText(
@@ -261,38 +268,5 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class ZigZagPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1565C0)
-      ..style = PaintingStyle.fill;
-
-    final path = Path()
-      ..lineTo(0, size.height * 0.75)
-      ..quadraticBezierTo(
-        size.width * 0.25,
-        size.height * 0.65,
-        size.width * 0.5,
-        size.height * 0.75,
-      )
-      ..quadraticBezierTo(
-        size.width * 0.75,
-        size.height * 0.85,
-        size.width,
-        size.height * 0.75,
-      )
-      ..lineTo(size.width, 0)
-      ..close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }

@@ -1,24 +1,26 @@
-import 'dart:async';
 
-import 'package:final_assignment/screen/login_screen.dart';
+import 'package:final_assignment/features/auth/presentation/view/login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashView extends ConsumerStatefulWidget {
+  const SplashView({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _SplashScreenState createState() => _SplashScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SplashViewState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashViewState extends ConsumerState<SplashView> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+    _navigateToLogin();
+  }
+
+  void _navigateToLogin() {
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginView()),
       );
     });
   }
