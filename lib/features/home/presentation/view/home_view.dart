@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_view/dashboard_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_view/profile_view.dart';
+import 'package:final_assignment/features/home/presentation/view/bottom_view/cart_view.dart';
+import 'package:final_assignment/features/home/presentation/view/bottom_view/wishlist_view.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -15,8 +17,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   final List<Widget> _screens = [
     const DashboardView(),
-    Placeholder(), // Placeholder for Wishlist View
-    Placeholder(), // Placeholder for Cart View
+    const WishlistView(),
+    const CartView(),
     const ProfileView(),
   ];
 
@@ -48,17 +50,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle),
+            icon: const Icon(Icons.settings), // Change to settings icon
             onPressed: () {
-              // Handle profile button action
+              // Handle settings button action
             },
           ),
         ],
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
-      ),
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -79,6 +78,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
         ],
         currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black, // Set selected icon color
+        unselectedItemColor: Colors.black, // Set unselected icon color
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
