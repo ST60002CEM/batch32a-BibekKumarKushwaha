@@ -1,5 +1,6 @@
 import 'package:final_assignment/features/auth/presentation/view/register_view.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/ui_helper.dart';
 import 'package:final_assignment/features/home/presentation/view/home_view.dart';
 
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 24.0),
-                        _buildTextField(
+                        buildTextField(
                           controller: _emailController,
                           label: 'Email',
                           icon: Icons.email,
@@ -77,7 +78,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           },
                         ),
                         const SizedBox(height: 16.0),
-                        _buildTextField(
+                        buildTextField(
                           controller: _passwordController,
                           label: 'Password',
                           icon: Icons.lock,
@@ -108,7 +109,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           ),
                         ),
                         const SizedBox(height: 24.0),
-                        _buildMainLoginButton(
+                        buildMainLoginButton(
                           'Log In',
                           Colors.blue[800]!,
                           () {
@@ -129,7 +130,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           ),
                         ),
                         const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
+                        buildSocialLoginButton(
                           'Log In with Facebook',
                           'assets/images/fb_logo.png',
                           Colors.blue[800]!,
@@ -138,7 +139,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           },
                         ),
                         const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
+                        buildSocialLoginButton(
                           'Log In with Google',
                           'assets/images/google_logo.png',
                           Colors.red,
@@ -147,7 +148,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           },
                         ),
                         const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
+                        buildSocialLoginButton(
                           'Log In with Apple',
                           'assets/images/mac_logo.png',
                           Colors.black,
@@ -192,80 +193,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: Colors.blue[800]),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      validator: validator,
-    );
-  }
-
-  Widget _buildMainLoginButton(
-      String text, Color color, VoidCallback onPressed) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: color,
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 100.0),
-        textStyle: const TextStyle(fontSize: 16.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Text(text),
-    );
-  }
-
-  Widget _buildSocialLoginButton(
-      String text, String asset, Color color, VoidCallback onPressed) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: color,
-        backgroundColor: Colors.white,
-        side: BorderSide(color: color),
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-        textStyle: TextStyle(fontSize: 16.0, color: color),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            asset,
-            height: 24.0,
-            width: 24.0,
-          ),
-          const SizedBox(width: 8.0),
-          Text(
-            text,
-            style: TextStyle(color: color),
-          ),
-        ],
       ),
     );
   }
