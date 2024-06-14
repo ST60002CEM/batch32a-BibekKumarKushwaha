@@ -2,7 +2,7 @@ import 'package:final_assignment/features/auth/presentation/view/register_view.d
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/ui_helper.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/zizzag.dart';
-import 'package:final_assignment/features/home/presentation/view/home_view.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
