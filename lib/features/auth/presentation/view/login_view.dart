@@ -1,14 +1,25 @@
-import 'package:final_assignment/screen/dashboard_screen.dart';
-import 'package:final_assignment/screen/signup_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:final_assignment/features/auth/presentation/view/register_view.dart';
+import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/ui_helper.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/zizzag.dart';
 
-class LoginScreen extends StatelessWidget {
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class LoginView extends ConsumerStatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  LoginScreen({super.key});
-
+  // LoginView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +62,7 @@ class LoginScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 24.0),
-                        _buildTextField(
+                        buildTextField(
                           controller: _emailController,
                           label: 'Email',
                           icon: Icons.email,
@@ -68,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 16.0),
-                        _buildTextField(
+                        buildTextField(
                           controller: _passwordController,
                           label: 'Password',
                           icon: Icons.lock,
@@ -99,17 +110,15 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 24.0),
-                        _buildMainLoginButton(
+                        buildMainLoginButton(
                           'Log In',
                           Colors.blue[800]!,
                           () {
                             if (_formKey.currentState!.validate()) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const DashboardScreen(),
-                                ),
-                              );
+                              ref
+                                  .read(authViewModelProvider.notifier)
+                                  .loginStudent(_emailController.text,
+                                      _passwordController.text);
                             }
                           },
                         ),
@@ -122,7 +131,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
+                        buildSocialLoginButton(
                           'Log In with Facebook',
                           'assets/images/fb_logo.png',
                           Colors.blue[800]!,
@@ -131,7 +140,7 @@ class LoginScreen extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
+                        buildSocialLoginButton(
                           'Log In with Google',
                           'assets/images/google_logo.png',
                           Colors.red,
@@ -140,7 +149,7 @@ class LoginScreen extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 16.0),
-                        _buildSocialLoginButton(
+                        buildSocialLoginButton(
                           'Log In with Apple',
                           'assets/images/mac_logo.png',
                           Colors.black,
@@ -154,7 +163,7 @@ class LoginScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignupScreen()),
+                                  builder: (context) => const RegisterView()),
                             );
                           },
                           child: RichText(
@@ -187,112 +196,5 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: Colors.blue[800]),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      validator: validator,
-    );
-  }
-
-  Widget _buildMainLoginButton(
-      String text, Color color, VoidCallback onPressed) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: color,
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 100.0),
-        textStyle: const TextStyle(fontSize: 16.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Text(text),
-    );
-  }
-
-  Widget _buildSocialLoginButton(
-      String text, String asset, Color color, VoidCallback onPressed) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: color,
-        backgroundColor: Colors.white,
-        side: BorderSide(color: color),
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-        textStyle: TextStyle(fontSize: 16.0, color: color),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            asset,
-            height: 24.0,
-            width: 24.0,
-          ),
-          const SizedBox(width: 8.0),
-          Text(
-            text,
-            style: TextStyle(color: color),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ZigZagPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1565C0)
-      ..style = PaintingStyle.fill;
-
-    final path = Path()
-      ..lineTo(0, size.height * 0.75)
-      ..quadraticBezierTo(
-        size.width * 0.25,
-        size.height * 0.65,
-        size.width * 0.5,
-        size.height * 0.75,
-      )
-      ..quadraticBezierTo(
-        size.width * 0.75,
-        size.height * 0.85,
-        size.width,
-        size.height * 0.75,
-      )
-      ..lineTo(size.width, 0)
-      ..close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }
