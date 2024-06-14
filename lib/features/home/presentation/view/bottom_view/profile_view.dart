@@ -142,7 +142,7 @@ class _ProfileViewState extends State<ProfileView> {
         );
       },
     );
-  }
+  } 
 
   void _logout() {
     // Add your logout logic here (e.g., clearing user session)
