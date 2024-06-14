@@ -29,7 +29,8 @@ class DashboardView extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 30,
-          backgroundImage: AssetImage('assets/profile_picture.png'), // Example profile picture
+          backgroundImage: AssetImage(
+              'assets/images/profile_picture.png'), // Example profile picture
         ),
         SizedBox(width: 20),
         Column(
