@@ -309,43 +309,44 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     );
   }
 
-  Widget _buildSuccessDialog(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Signup Successful'),
-      backgroundColor:
-          const Color.fromARGB(255, 223, 233, 241), // Set background color here
-      content: const SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text('Your account has been successfully created.'),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        Center(
-          child: TextButton(
-            child: const Text('OKAY'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginView()),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
+//   Widget _buildSuccessDialog(BuildContext context) {
+//     return AlertDialog(
+//       title: const Text('Signup Successful'),
+//       backgroundColor:
+//           const Color.fromARGB(255, 223, 233, 241), // Set background color here
+//       content: const SingleChildScrollView(
+//         child: ListBody(
+//           children: <Widget>[
+//             Text('Your account has been successfully created.'),
+//           ],
+//         ),
+//       ),
+//       actions: <Widget>[
+//         Center(
+//           child: TextButton(
+//             child: const Text('OKAY'),
+//             onPressed: () {
+//               Navigator.of(context).pop();
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (context) => const LoginView()),
+//               );
+//             },
+//           ),
+//         ),
+//       ],
+//     );
+//   }
 
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return _buildSuccessDialog(context);
-      },
-    );
-  }
+//   void _showSuccessDialog(BuildContext context) {
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return _buildSuccessDialog(context);
+//       },
+//     );
+//   }
+// }
 }
 
 class ZigZagPainter extends CustomPainter {
