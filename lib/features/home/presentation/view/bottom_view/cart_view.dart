@@ -16,10 +16,12 @@ class CartView extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: ListTile(
               leading: const CircleAvatar(
-                backgroundImage: AssetImage('assets/images/product.jpg'), // Replace with item image
+                backgroundImage: AssetImage(
+                    'assets/images/product.jpg'), // Replace with item image
               ),
               title: Text('Product ${index + 1}'),
-              subtitle: const Text('Price: \$10.00'), // Replace with item details
+              subtitle:
+                  const Text('Price: \$10.00'), // Replace with item details
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
