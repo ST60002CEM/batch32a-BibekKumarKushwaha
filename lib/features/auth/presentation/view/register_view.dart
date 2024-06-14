@@ -1,6 +1,8 @@
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:final_assignment/features/auth/presentation/view/login_view.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/ui_helper.dart';
+import 'package:final_assignment/features/auth/presentation/widgets/zizzag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -59,7 +61,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24.0),
-                    _buildTextField(
+                    buildTextField(
                       controller: _firstNameController,
                       label: 'First Name',
                       icon: Icons.person,
@@ -71,7 +73,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    _buildTextField(
+                    buildTextField(
                       controller: _lastNameController,
                       label: 'Last Name',
                       icon: Icons.person,
@@ -83,7 +85,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    _buildTextField(
+                    buildTextField(
                       controller: _emailController,
                       label: 'Email',
                       icon: Icons.email,
@@ -99,7 +101,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    _buildPasswordField(
+                    buildPasswordField(
                       controller: _passwordController,
                       label: 'Password',
                       icon: Icons.lock,
@@ -114,7 +116,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    _buildPasswordField(
+                    buildPasswordField(
                       controller: _confirmPasswordController,
                       label: 'Confirm Password',
                       icon: Icons.lock,
@@ -166,7 +168,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16.0),
-                    _buildSocialLoginButton(
+                    buildSocialLoginButton(
                       'Sign Up with Facebook',
                       'assets/images/fb_logo.png',
                       Colors.blue[800]!,
@@ -175,7 +177,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    _buildSocialLoginButton(
+                    buildSocialLoginButton(
                       'Sign Up with Google',
                       'assets/images/google_logo.png',
                       Colors.red,
@@ -184,7 +186,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    _buildSocialLoginButton(
+                    buildSocialLoginButton(
                       'Sign Up with Apple',
                       'assets/images/mac_logo.png',
                       Colors.black,
@@ -229,155 +231,5 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
         ),
       ),
     );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: Colors.blue[800]),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      validator: validator,
-    );
-  }
-
-  Widget _buildPasswordField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool obscureText = true,
-    TextInputType keyboardType = TextInputType.text,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: Colors.blue[800]),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      validator: validator,
-    );
-  }
-
-  Widget _buildSocialLoginButton(
-      String text, String asset, Color color, VoidCallback onPressed) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: color,
-        backgroundColor: Colors.white,
-        side: BorderSide(color: color),
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-        textStyle: TextStyle(fontSize: 16.0, color: color),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            asset,
-            height: 24.0,
-            width: 24.0,
-          ),
-          const SizedBox(width: 8.0),
-          Text(
-            text,
-            style: TextStyle(color: color),
-          ),
-        ],
-      ),
-    );
-  }
-
-//   Widget _buildSuccessDialog(BuildContext context) {
-//     return AlertDialog(
-//       title: const Text('Signup Successful'),
-//       backgroundColor:
-//           const Color.fromARGB(255, 223, 233, 241), // Set background color here
-//       content: const SingleChildScrollView(
-//         child: ListBody(
-//           children: <Widget>[
-//             Text('Your account has been successfully created.'),
-//           ],
-//         ),
-//       ),
-//       actions: <Widget>[
-//         Center(
-//           child: TextButton(
-//             child: const Text('OKAY'),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(builder: (context) => const LoginView()),
-//               );
-//             },
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   void _showSuccessDialog(BuildContext context) {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return _buildSuccessDialog(context);
-//       },
-//     );
-//   }
-// }
-}
-
-class ZigZagPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1565C0)
-      ..style = PaintingStyle.fill;
-
-    final path = Path()
-      ..lineTo(0, size.height * 0.75)
-      ..quadraticBezierTo(
-        size.width * 0.25,
-        size.height * 0.65,
-        size.width * 0.5,
-        size.height * 0.75,
-      )
-      ..quadraticBezierTo(
-        size.width * 0.75,
-        size.height * 0.85,
-        size.width,
-        size.height * 0.75,
-      )
-      ..lineTo(size.width, 0)
-      ..close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }
