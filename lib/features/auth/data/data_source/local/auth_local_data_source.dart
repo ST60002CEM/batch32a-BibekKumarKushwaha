@@ -22,8 +22,8 @@ class AuthLocalDataSource {
     try {
       final authHiveModel = _authHiveModel.toHiveModel(student);
 
-      final user = await _hiveService.getStudentByUsername(student.username);
-      if (user.username.isNotEmpty) {
+      final user = await _hiveService.getStudentByUsername(student.email);
+      if (user.email.isNotEmpty) {
         return Left(Failure(error: 'User already exists'));
       }
 
@@ -35,11 +35,11 @@ class AuthLocalDataSource {
   }
 
   Future<Either<Failure, bool>> loginStudent(
-    String username,
+    String email,
     String password,
   ) async {
     try {
-      AuthHiveModel? users = await _hiveService.login(username, password);
+      AuthHiveModel? users = await _hiveService.login(email, password);
 
       return const Right(true);
     } catch (e) {

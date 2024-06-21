@@ -1,166 +1,71 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:final_assignment/app/constants/api_endpoint.dart';
 import 'package:final_assignment/core/failure/failure.dart';
 import 'package:final_assignment/core/networking/remote/http_service.dart';
 import 'package:final_assignment/core/shared_prefs/user_shared_prefs.dart';
-import 'package:final_assignment/features/auth/data/dto/get_current_user_dto.dart';
+import 'package:final_assignment/features/auth/data/model/auth_api_model.dart';
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final authRemoteDataSourceProvider = Provider(
-  (ref) => AuthRemoteDataSource(
-    dio: ref.read(httpServiceProvider),
-    userSharedPrefs: ref.read(userSharedPrefsProvider),
+final authRemoteDatasourceProvider = Provider<AuthRemoteDatasource>(
+  (ref) => AuthRemoteDatasource(
+    dio: ref.watch(httpServiceProvider),
+    authApiModel: ref.watch(authApiModelProvider),
+    userSharedprefs: ref.watch(userSharedPrefsProvider),
   ),
 );
 
-class AuthRemoteDataSource {
+class AuthRemoteDatasource {
   final Dio dio;
-  final UserSharedPrefs userSharedPrefs;
+  final AuthApiModel authApiModel;
+  final UserSharedPrefs userSharedprefs;
 
-  AuthRemoteDataSource({required this.dio, required this.userSharedPrefs});
+  AuthRemoteDatasource({
+    required this.dio,
+    required this.authApiModel,
+    required this.userSharedprefs,
+  });
 
-  Future<Either<Failure, bool>> registerStudent(AuthEntity student) async {
+  Future<Either<Failure, bool>> createUser(AuthEntity authEntity) async {
     try {
       Response response = await dio.post(
         ApiEndpoints.register,
-        data: {
-          "fname": student.fname,
-          "lname": student.lname,
-          "phone": student.phone,
-          "image": student.image,
-          "username": student.username,
-          "password": student.password,
-         
-        },
+        data: authApiModel.fromEntity(authEntity).toJson(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return const Right(true);
-      } else {
-        return Left(
-          Failure(
-            error: response.data["message"],
-            statusCode: response.statusCode.toString(),
-          ),
-        );
       }
-    } on DioException catch (e) {
       return Left(
         Failure(
-          error: e.error.toString(),
-          statusCode: e.response?.statusCode.toString() ?? '0',
-        ),
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
       );
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
     }
   }
 
-  // Upload image using multipart
-  Future<Either<Failure, String>> uploadProfilePicture(
-    File image,
-  ) async {
-    try {
-      String fileName = image.path.split('/').last;
-      FormData formData = FormData.fromMap(
-        {
-          'profilePicture': await MultipartFile.fromFile(
-            image.path,
-            filename: fileName,
-          ),
-        },
-      );
-
-      Response response = await dio.post(
-        ApiEndpoints.uploadImage,
-        data: formData,
-      );
-
-      return Right(response.data["data"]);
-    } on DioException catch (e) {
-      return Left(
-        Failure(
-          error: e.error.toString(),
-          statusCode: e.response?.statusCode.toString() ?? '0',
-        ),
-      );
-    }
-  }
-
-  Future<Either<Failure, bool>> loginStudent(
-    String username,
-    String password,
-  ) async {
+  Future<Either<Failure, bool>> loginUser(
+      {required String email, required String password}) async {
     try {
       Response response = await dio.post(
         ApiEndpoints.login,
         data: {
-          "username": username,
-          "password": password,
+          'email': email,
+          'password': password,
         },
       );
-      if (response.statusCode == 200) {
-        String token = response.data["token"];
-        // Save token to shared prefs
-        await userSharedPrefs.setUserToken(token);
+      if (response.statusCode == 201) {
         return const Right(true);
-      } else {
-        return Left(
-          Failure(
-            error: response.data["message"],
-            statusCode: response.statusCode.toString(),
-          ),
-        );
       }
-    } on DioException catch (e) {
       return Left(
         Failure(
-          error: e.error.toString(),
-          statusCode: e.response?.statusCode.toString() ?? '0',
-        ),
+            error: response.data['message'],
+            statusCode: response.statusCode.toString()),
       );
-    }
-  }
-
-  Future<Either<Failure, AuthEntity>> getCurrentUser() async {
-    try {
-      // Get the token from shared prefs
-      String? token;
-      var data = await userSharedPrefs.getUserToken();
-      data.fold(
-            (l) => token = null,
-            (r) => token = r!,
-      );
-
-      var response = await dio.get(
-        ApiEndpoints.currentUser,
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        GetCurrentUserDto getCurrentUserDto = GetCurrentUserDto.fromJson(response.data);
-
-        return Right(getCurrentUserDto.toEntity());
-      } else {
-        return Left(
-          Failure(
-            error: response.data["message"],
-            statusCode: response.statusCode.toString(),
-          ),
-        );
-      }
     } on DioException catch (e) {
-      return Left(
-        Failure(
-          error: e.error.toString(),
-          statusCode: e.response?.statusCode.toString() ?? '0',
-        ),
-      );
+      return Left(Failure(error: e.error.toString()));
     }
   }
-
-  
 }
