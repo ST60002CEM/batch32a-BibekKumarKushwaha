@@ -148,12 +148,12 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                               fname: _firstNameController.text,
                               lname: _lastNameController.text,
                               phone: '1234567890',
-                              username: _emailController.text,
+                              email: _emailController.text,
                               password: _passwordController.text);
 
                           ref
                               .read(authViewModelProvider.notifier)
-                              .registerStudent(student);
+                              .registerUser(student);
                         }
                       },
                       child: const Text('Sign Up'),
