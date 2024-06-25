@@ -145,8 +145,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                         if (_formKey.currentState!.validate()) {
                           // Perform sign up action
                           AuthEntity student = AuthEntity(
-                              fname: _firstNameController.text,
-                              lname: _lastNameController.text,
+                              firstName: _firstNameController.text,
+                              lastName: _lastNameController.text,
                               phone: '1234567890',
                               email: _emailController.text,
                               password: _passwordController.text);
