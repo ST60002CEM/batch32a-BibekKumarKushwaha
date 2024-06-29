@@ -76,7 +76,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hello, User!',
+              'Hello, admin!',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
