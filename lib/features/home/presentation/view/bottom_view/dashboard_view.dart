@@ -1,9 +1,8 @@
-import 'package:final_assignment/features/home/presentation/viewmodel/products_view_model.dart';
-
-import 'package:final_assignment/features/home/presentation/widgets/my_product_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:final_assignment/features/home/presentation/viewmodel/products_view_model.dart';
+import 'package:final_assignment/features/home/presentation/widgets/my_product_cart.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
@@ -37,27 +36,28 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
           }
           return true;
         },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            controller: _scrollController,
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 20),
-              _buildStatisticsSection(),
-              const SizedBox(height: 20),
-              // _buildRecentActivitiesSection(),
-              const SizedBox(height: 20),
-              _buildProductCarousel(),
-              const SizedBox(height: 20),
-              _buildProductGrid(state),
-              if (state.isLoading)
-                const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.red,
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await ref.read(productViewModelProvider.notifier).getProducts();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              controller: _scrollController,
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 20),
+                _buildProductCarousel(),
+                const SizedBox(height: 20),
+                _buildProductGrid(state),
+                if (state.isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.red,
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -89,50 +89,6 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     );
   }
 
-  Widget _buildStatisticsSection() {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              'Statistics',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildStatisticItem('Orders', '150'),
-                _buildStatisticItem('Revenue', '\$12k'),
-                _buildStatisticItem('Users', '500'),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatisticItem(String label, String value) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-      ],
-    );
-  }
-
   Widget _buildProductCarousel() {
     return CarouselSlider(
       options: CarouselOptions(
@@ -140,9 +96,6 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         autoPlay: true,
         enlargeCenterPage: true,
         aspectRatio: 2.0,
-        onPageChanged: (index, reason) {
-          // Optional: Handle carousel page change
-        },
       ),
       items: [
         'https://img.freepik.com/free-psd/black-friday-super-sale-facebook-cover-template_106176-1568.jpg',
