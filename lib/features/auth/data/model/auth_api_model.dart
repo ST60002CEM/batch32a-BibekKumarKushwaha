@@ -13,8 +13,8 @@ final authApiModelProvider = Provider<AuthApiModel>((ref) {
 class AuthApiModel extends Equatable {
   @JsonKey(name: '_id')
   final String? id;
-  final String fname;
-  final String lname;
+  final String firstName;
+  final String lastName;
   final String phone;
 
   final String email;
@@ -22,8 +22,8 @@ class AuthApiModel extends Equatable {
 
   const AuthApiModel({
     this.id,
-    required this.fname,
-    required this.lname,
+    required this.firstName,
+    required this.lastName,
     required this.phone,
     required this.email,
     required this.password,
@@ -31,8 +31,8 @@ class AuthApiModel extends Equatable {
 
   const AuthApiModel.empty()
       : id = '',
-        fname = '',
-        lname = '',
+        firstName = '',
+        lastName = '',
         phone = '',
         email = '',
         password = '';
@@ -40,8 +40,8 @@ class AuthApiModel extends Equatable {
   AuthEntity toEntity() {
     return AuthEntity(
       id: id,
-      fname: fname,
-      lname: lname,
+      firstName: firstName,
+      lastName: lastName,
       //image: image,
       phone: phone,
       email: email,
@@ -51,8 +51,8 @@ class AuthApiModel extends Equatable {
 
   AuthApiModel fromEntity(AuthEntity entity) {
     return AuthApiModel(
-      fname: entity.fname,
-      lname: entity.lname,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
       //image: entity.image,
       phone: entity.phone,
       email: entity.email,
@@ -66,5 +66,5 @@ class AuthApiModel extends Equatable {
   Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
 
   @override
-  List<Object?> get props => [id, fname, lname, phone, email, password];
+  List<Object?> get props => [id, firstName, lastName, phone, email, password];
 }
