@@ -62,7 +62,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         ),
       ),
     );
-  }
+  } 
 
   Widget _buildHeader() {
     return const Row(
