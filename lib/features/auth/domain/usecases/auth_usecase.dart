@@ -13,12 +13,12 @@ class AuthUseCase {
 
   AuthUseCase(this._authRepository);
 
-  Future<Either<Failure, bool>> registerUser(AuthEntity student) async {
-    return await _authRepository.registerUser(student);
+  Future<Either<Failure, bool>> registerUser(AuthEntity? student) async {
+    return await _authRepository.registerUser(student!);
   }
 
   Future<Either<Failure, bool>> loginUser(
-      String username, String password) async {
-    return await _authRepository.loginUser(username, password);
+      String? username, String? password) async {
+    return await _authRepository.loginUser(username??'', password??'');
   }
 }
