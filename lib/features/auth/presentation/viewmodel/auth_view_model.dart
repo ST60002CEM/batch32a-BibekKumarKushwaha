@@ -42,16 +42,16 @@ class AuthViewModel extends StateNotifier<AuthState> {
   ) async {
     state = state.copyWith(isLoading: true);
     var data = await authUseCase.loginUser(email, password);
-    data.fold(
-      (l) {
-        state = state.copyWith(isLoading: false, error: l.error);
-        showMySnackBar(message: l.error, color: Colors.red);
-      },
-      (r) {
-        state = state.copyWith(isLoading: false, error: null);
-        openHomeView();
-      },
-    );
+    // data.fold(
+    //   (l) {
+    //     state = state.copyWith(isLoading: false, error: l.error);
+    //     showMySnackBar(message: l.error, color: Colors.red);
+    //   },
+    //   (r) {
+    //     state = state.copyWith(isLoading: false, error: null);
+    //     openHomeView();
+    //   },
+    // );
   }
 
   void openRegisterView() {
