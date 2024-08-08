@@ -88,17 +88,21 @@
 //       ),
 //     );
 //   }
-// }import 'package:flutter/material.dart';
+// }
+import 'dart:async';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:final_assignment/core/common/my_snackbar.dart';
+import 'package:final_assignment/features/home/presentation/viewmodel/home_view_model.dart';
+import 'package:final_assignment/features/home/presentation/viewmodel/theme_provider.dart';
+import 'package:final_assignment/profile/presentation/view/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sensors_plus/sensors_plus.dart';
-import 'dart:async';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:final_assignment/features/home/presentation/viewmodel/theme_provider.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_view/dashboard_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_view/profile_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_view/cart_view.dart';
 import 'package:final_assignment/features/home/presentation/view/bottom_view/wishlist_view.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -115,34 +119,29 @@ class _HomeViewState extends ConsumerState<HomeView> {
     const WishlistView(),
     const CartView(),
     const ProfileView(),
-  ];
 
+  ];
   bool showYesNoDialog = true;
   bool isDialogShowing = false;
+
   List<double> _gyroscopeValues = [];
   final List<StreamSubscription<dynamic>> _streamSubscription = [];
 
   @override
   void initState() {
-    super.initState();
-    _streamSubscription.add(gyroscopeEvents.listen((GyroscopeEvent event) {
+    _streamSubscription.add(gyroscopeEvents!.listen((GyroscopeEvent event) {
       setState(() {
         _gyroscopeValues = <double>[event.x, event.y, event.z];
+
         _checkGyroscopeValues(_gyroscopeValues);
       });
     }));
-  }
 
-  @override
-  void dispose() {
-    for (var subscription in _streamSubscription) {
-      subscription.cancel();
-    }
-    super.dispose();
+    super.initState();
   }
 
   void _checkGyroscopeValues(List<double> values) async {
-    const double threshold = 5; // Example threshold value, adjust as needed
+    const double threshold = 0.5; // Example threshold value, adjust as needed
     if (values.any((value) => value.abs() > threshold)) {
       if (showYesNoDialog && !isDialogShowing) {
         isDialogShowing = true;
@@ -152,19 +151,16 @@ class _HomeViewState extends ConsumerState<HomeView> {
           title: 'Logout',
           desc: 'Are You Sure You Want To Logout?',
           btnOkOnPress: () {
-            var profileViewmodelProvider;
-            ref.read(profileViewmodelProvider.notifier).logout();
+            ref.read(homeViewModelProvider.notifier).logout();
           },
           btnCancelOnPress: () {},
         ).show();
 
         isDialogShowing = false;
         if (result) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Logged Out Successfully!'),
-              backgroundColor: Colors.green,
-            ),
+          showMySnackBar(
+            message: 'Logged Out Successfully!',
+            color: Colors.green,
           );
         }
       }
@@ -177,37 +173,36 @@ class _HomeViewState extends ConsumerState<HomeView> {
     });
   }
 
+  void _onBackPressed() {
+    setState(() {
+      if (_selectedIndex > 0) {
+        _selectedIndex--;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeNotifier = ref.watch(themeProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                // Implement your sliding menu functionality here
-              },
-            ),
-            const SizedBox(width: 16), // Adjust spacing as needed
-            Expanded(
-              child: Center(
-                child: Image.asset(
-                  'assets/images/logo.png', // Replace with your photo path
-                  height: AppBar().preferredSize.height - 12, // Adjust height
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            const SizedBox(width: 16), // Adjust spacing as needed
-          ],
+        leading: _selectedIndex > 0
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: _onBackPressed,
+              )
+            : null,
+        title: Center(
+          child: Image.asset(
+            'assets/images/logo.png', // Replace with your logo path
+            height: AppBar().preferredSize.height - 12, // Adjust height
+            fit: BoxFit.contain,
+          ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.brightness_6),
             onPressed: () {
               themeNotifier.toggleTheme();
             },
