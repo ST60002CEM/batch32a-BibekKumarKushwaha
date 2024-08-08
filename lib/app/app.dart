@@ -1,5 +1,6 @@
 import 'package:final_assignment/app/navigator_key/navigator_key.dart';
 import 'package:final_assignment/app/themes/app_theme.dart';
+import 'package:final_assignment/app/themes/light_dark_theme.dart';
 import 'package:final_assignment/features/splash/presentation/view/splash_view.dart';
 
 import 'package:flutter/material.dart';
@@ -12,7 +13,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.getApplicationTheme(false),
+      // theme: AppTheme.getApplicationTheme(false),
+      themeMode: ThemeMode.system,
+      theme: KAppTheme.lightTheme,
+      darkTheme: KAppTheme.darkTheme,
       title: 'Too Ease',
       home: const SplashView(),
       navigatorKey: AppNavigator.navigatorKey,
