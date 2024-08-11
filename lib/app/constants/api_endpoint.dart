@@ -36,8 +36,8 @@ class ApiEndpoints {
   // ===========Cart Routes===========
 static const String addToCart = 'cart/add';
 static const String getCart = 'cart/all';
-static const String updateCart = 'cart/update_cart';
-static const String deleteCart = 'cart/remove_cart_item/';
+static const String updateCart = 'cart/update';
+static const String deleteCart = 'cart/delete';
 }
 
 
