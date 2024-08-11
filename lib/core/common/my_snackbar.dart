@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 showMySnackBar({
   required String message,
-  Color? color,
+  Color? color, required MaterialColor backgroundColor,
 }) {
   ScaffoldMessenger.of(
     // We already created this navigator key in the navigator_key.dart file
