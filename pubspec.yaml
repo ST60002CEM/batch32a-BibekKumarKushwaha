@@ -57,6 +57,8 @@ dependencies:
   mockito: ^5.4.4
   all_sensors2: ^1.0.1
   local_auth: ^2.3.0
+  iconsax: ^0.0.8
+  light_sensor: ^3.0.0
   
 
 dev_dependencies:
