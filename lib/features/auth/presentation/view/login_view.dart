@@ -302,6 +302,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                                 ),
                               );
                             },
+                            
                             child: const Text(
                               'Forgot Password?',
                               style: TextStyle(
