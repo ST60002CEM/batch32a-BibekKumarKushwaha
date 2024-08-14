@@ -29,11 +29,11 @@ class AuthViewModel extends StateNotifier<AuthState> {
           isLoading: false,
           error: failure.error,
         );
-        showMySnackBar(message: failure.error, color: Colors.red);
+        showMySnackBar(message: failure.error, backgroundColor: Colors.red);
       },
       (success) {
         state = state.copyWith(isLoading: false, error: null);
-        showMySnackBar(message: "Successfully registered");
+        showMySnackBar(message: "Successfully registered", backgroundColor: Colors.green);
       },
     );
   }
@@ -47,7 +47,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
     data.fold(
       (l) {
         state = state.copyWith(isLoading: false, error: l.error);
-        showMySnackBar(message: l.error, color: Colors.red);
+        showMySnackBar(message: l.error, backgroundColor: Colors.red);
       },
       (r) {
         state = state.copyWith(isLoading: false, error: null);
@@ -78,24 +78,24 @@ class AuthViewModel extends StateNotifier<AuthState> {
       );
     } catch (e) {
       showMySnackBar(
-          message: 'Fingerprint authentication failed', color: Colors.red);
+          message: 'Fingerprint authentication failed', backgroundColor: Colors.red);
     }
  
     if (authenticated) {
       authUseCase.fingerPrintLogin().then((data) {
         data.fold(
           (l) {
-            showMySnackBar(message: l.error, color: Colors.red);
+            showMySnackBar(message: l.error, backgroundColor: Colors.red);
           },
           (r) {
-            showMySnackBar(message: "User logged in successfully");
+            showMySnackBar(message: "User logged in successfully", backgroundColor: Colors.green);
             navigator.openHomeView();
           },
         );
       });
     } else {
       showMySnackBar(
-          message: 'Fingerprint authentication failed', color: Colors.red);
+          message: 'Fingerprint authentication failed', backgroundColor: Colors.red);
     }
   }
     void logout() async {
