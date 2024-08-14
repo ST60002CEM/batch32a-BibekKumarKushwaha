@@ -58,6 +58,9 @@ class AuthRemoteDatasource {
         },
       );
       if (response.statusCode == 201) {
+        final token = response.data['token'];
+        await userSharedprefs.setUserToken(token);
+
         return const Right(true);
       }
       return Left(
