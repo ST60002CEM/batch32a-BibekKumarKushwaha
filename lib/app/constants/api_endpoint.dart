@@ -3,7 +3,7 @@ class ApiEndpoints {
 
   static const Duration connectionTimeout = Duration(seconds: 1000);
   static const Duration receiveTimeout = Duration(seconds: 1000);
-  static const String baseUrl = "http://172.25.0.114:5000/api/";
+  static const String baseUrl = "http://192.168.10.72:5000/api/";
   //static const String baseUrl = "http://localhost:3000/api/v1/";
   //static const String baseUrl = "http://192.168.4.4:3000/api/v1/";
   //static const String products = '$baseUrl/admin/dashboard/products';
@@ -25,7 +25,7 @@ class ApiEndpoints {
   
 
   // static const String imageUrl = 'http://10.0.0.2:5000/products/';
-  static const String imageUrl = 'http://172.25.0.114:5000/products/';
+  static const String imageUrl = 'http://192.168.10.72:5000/products/';
 
   // ============Cart Routes ==========
   // static const String addToCart = 'cart/add';
@@ -45,9 +45,10 @@ static const String deleteCart = 'cart/delete';
   static const String addFavorite = 'favourite/add';
   static const String deleteFavorite = 'favourite/delete/';
 
-  //   _____________________________khalti________________________________
+//=============KhaltiRoutes================
   static const String khalti = 'payment/initialize_khalti';
   static const String completepayment = 'payment/complete-khalti-payment';
 }
+
 
 
