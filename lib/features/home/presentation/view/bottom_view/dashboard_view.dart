@@ -1,5 +1,6 @@
 
 // import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:final_assignment/core/common/widgets/my_search_container.dart';
 // import 'package:final_assignment/features/cart/presentation/view_model/cart_view_model.dart';
 // import 'package:final_assignment/core/common/provider/theme_view_model_provider.dart';
 // import 'package:final_assignment/features/home/presentation/widgets/my_product_cart.dart';
@@ -7,6 +8,7 @@
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:final_assignment/features/home/presentation/viewmodel/products_view_model.dart';
 // import 'package:final_assignment/features/home/domain/entity/product_entity.dart';
+//  // Import your search container
 
 // class DashboardView extends ConsumerStatefulWidget {
 //   const DashboardView({super.key});
@@ -59,6 +61,13 @@
 //               controller: _scrollController,
 //               children: [
 //                 _buildHeader(),
+//                 const SizedBox(height: 20),
+//                 const MySearchContainer(
+//                   text: 'Search products...',
+//                   icon: Icons.search,
+//                   showBackground: true,
+//                   showBorder: true,
+//                 ),
 //                 const SizedBox(height: 20),
 //                 _buildProductCarousel(),
 //                 const SizedBox(height: 20),
@@ -151,20 +160,18 @@
 //       itemCount: state.products.length,
 //       itemBuilder: (context, index) {
 //         final product = state.products[index];
-//            return MyCard(
-//                     productEntity: product,
-//                     onPressed: () {
-//                       ref
-//                           .read(cartViewModelProvider.notifier)
-//                           .addCart(product.id!, 1, 1);
-//                     },
-//                   );
+//         return MyCard(
+//           productEntity: product,
+//           onPressed: () {
+//             ref.read(cartViewModelProvider.notifier).addCart(product.id!, 1, 1);
+//           },
+//         );
 //       },
 //     );
 //   }
 // }
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:final_assignment/core/common/widgets/my_search_container.dart';
+import 'package:final_assignment/core/common/widgets/my_search_container.dart'; // Ensure this is updated or replaced with CustomSearchBar if needed
 import 'package:final_assignment/features/cart/presentation/view_model/cart_view_model.dart';
 import 'package:final_assignment/core/common/provider/theme_view_model_provider.dart';
 import 'package:final_assignment/features/home/presentation/widgets/my_product_cart.dart';
@@ -172,7 +179,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:final_assignment/features/home/presentation/viewmodel/products_view_model.dart';
 import 'package:final_assignment/features/home/domain/entity/product_entity.dart';
- // Import your search container
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
@@ -183,10 +189,13 @@ class DashboardView extends ConsumerStatefulWidget {
 
 class _DashboardViewState extends ConsumerState<DashboardView> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -194,6 +203,13 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   Widget build(BuildContext context) {
     final state = ref.watch(productViewModelProvider);
     final cartViewModel = ref.read(cartViewModelProvider.notifier);
+
+    // Filter products based on search query
+    final filteredProducts = state.products.where((product) {
+      final productName = product.productName.toLowerCase();
+      final query = _searchQuery.toLowerCase();
+      return productName.contains(query);
+    }).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -226,16 +242,11 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
               children: [
                 _buildHeader(),
                 const SizedBox(height: 20),
-                const MySearchContainer(
-                  text: 'Search products...',
-                  icon: Icons.search,
-                  showBackground: true,
-                  showBorder: true,
-                ),
+                _buildSearchBar(),
                 const SizedBox(height: 20),
                 _buildProductCarousel(),
                 const SizedBox(height: 20),
-                _buildProductGrid(state, cartViewModel),
+                _buildProductGrid(filteredProducts, cartViewModel),
                 if (state.isLoading)
                   const Center(
                     child: CircularProgressIndicator(
@@ -275,6 +286,24 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     );
   }
 
+  Widget _buildSearchBar() {
+    return TextField(
+      controller: _searchController,
+      onChanged: (query) {
+        setState(() {
+          _searchQuery = query;
+        });
+      },
+      decoration: InputDecoration(
+        hintText: 'Search products...',
+        prefixIcon: const Icon(Icons.search),
+        border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.grey[200],
+      ),
+    );
+  }
+
   Widget _buildProductCarousel() {
     return CarouselSlider(
       options: CarouselOptions(
@@ -307,8 +336,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     );
   }
 
-  Widget _buildProductGrid(dynamic state, CartViewModel cartViewModel) {
-    if (state.products.isEmpty) {
+  Widget _buildProductGrid(List<ProductEntity> products, CartViewModel cartViewModel) {
+    if (products.isEmpty) {
       return const Center(child: Text('No products available.'));
     }
 
@@ -321,9 +350,9 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         mainAxisSpacing: 8,
         childAspectRatio: 0.75,
       ),
-      itemCount: state.products.length,
+      itemCount: products.length,
       itemBuilder: (context, index) {
-        final product = state.products[index];
+        final product = products[index];
         return MyCard(
           productEntity: product,
           onPressed: () {
