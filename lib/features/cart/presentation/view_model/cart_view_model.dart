@@ -1,5 +1,6 @@
 
 import 'package:final_assignment/features/cart/domain/usecases/cart_usecase.dart';
+import 'package:final_assignment/features/cart/presentation/navigator/cart_navigator.dart';
 import 'package:final_assignment/features/cart/presentation/state/cart_state.dart';
 
 import 'package:final_assignment/core/shared_prefs/user_shared_prefs.dart';
@@ -15,18 +16,21 @@ final cartViewModelProvider =
     StateNotifierProvider<CartViewModel, CartState>((ref) => CartViewModel(
           
           cartUsecase: ref.watch(cartUsecaseProvider),
-          userSharedPrefs: ref.watch(userSharedPrefsProvider),
+          userSharedPrefs: ref.watch(userSharedPrefsProvider), cartViewNavigator: ref.watch(cartNavigatorProvider),
         ));
 
 class CartViewModel extends StateNotifier<CartState> {
   CartViewModel({
     required this.cartUsecase,
     required this.userSharedPrefs,
+    required this.cartViewNavigator,
 
   }) : super(CartState.initial());
 
   final CartUsecase cartUsecase;
   final UserSharedPrefs userSharedPrefs;
+  final CartViewNavigator cartViewNavigator;
+
   
 
   //get cart
@@ -94,5 +98,8 @@ class CartViewModel extends StateNotifier<CartState> {
       showMySnackBar(message: 'Product removed from cart', backgroundColor: Colors.green);
     });
     await getCarts();
+  }
+  void openPaymenntView() {
+      cartViewNavigator.openKhaltiView();
   }
 }
