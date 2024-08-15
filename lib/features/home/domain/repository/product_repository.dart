@@ -11,5 +11,5 @@ final productRepositoryProvider = Provider<IProductRepository>((ref)=>
 abstract class IProductRepository {
   Future<Either<Failure,List<ProductEntity>>> pagination(int page, int limit);
 
-
+  Future<Either<Failure, ProductEntity>> getProductById(String id);
 }
