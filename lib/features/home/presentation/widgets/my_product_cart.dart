@@ -150,18 +150,18 @@ class MyCard extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     // Navigate to SingleView with the productEntity data
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SingleView(
-                          singleProduct: productEntity,
-                          selectedQuantity: 1, // Initialize with default quantity
-                          onAddToBag: onPressed,
-                          onIncreaseQuantity: () {},
-                          onDecreaseQuantity: () {},
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => SingleView(
+                    //       singleProduct: productEntity,
+                    //       selectedQuantity: 1, // Initialize with default quantity
+                    //       onAddToBag: onPressed,
+                    //       onIncreaseQuantity: () {},
+                    //       onDecreaseQuantity: () {},
+                    //     ),
+                    //   ),
+                    // );
                   },
                   child: Stack(
                     children: [
@@ -234,14 +234,14 @@ class MyCard extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.add_shopping_cart),
-                    color: Colors.green,
+                    color: Colors.blue,
                     onPressed: onPressed,
                   ),
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.share),
-                        color: Colors.blue,
+                        icon: const Icon(Icons.reviews_outlined),
+                        color: Colors.green,
                         onPressed: () {},
                       ),
                       IconButton(
