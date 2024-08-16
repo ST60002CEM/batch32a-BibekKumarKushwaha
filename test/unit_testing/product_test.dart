@@ -1,79 +1,110 @@
-// import 'package:final_assignment/features/home/presentation/view/home_view.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:sensors_plus/sensors_plus.dart';
-// import 'package:mockito/mockito.dart';
-// import 'package:awesome_dialog/awesome_dialog.dart';
-// import 'package:final_assignment/features/home/presentation/viewmodel/theme_provider.dart';
+import 'package:dartz/dartz.dart';
+import 'package:final_assignment/features/home/domain/entity/product_entity.dart';
+import 'package:final_assignment/features/home/domain/usecases/product_usecase.dart';
 
-// // Mock class for GyroscopeEvent
-// class MockGyroscopeEvent extends Mock implements GyroscopeEvent {}
+import 'package:final_assignment/features/home/presentation/viewmodel/products_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
-// void main() {
-//   group('HomeView widget test', () {
-//     // Mock the necessary dependencies
-//     final mockThemeProvider = MockThemeProvider();
-//     final mockNotifier = MockNotifierProvider<ThemeProvider>(mockThemeProvider);
+import 'product_test.mocks.dart';
 
-//     testWidgets('Widget renders correctly', (WidgetTester tester) async {
-//       await tester.pumpWidget(
-//         ProviderScope(
-//           overrides: [
-//             themeProvider.notifier.overrid7eWithValue(mockNotifier),
-//           ],
-//           child: MaterialApp(
-//             home: HomeView(),
-//           ),
-//         ),
-//       );
+@GenerateNiceMocks([MockSpec<ProductUsecase>()])
+void main() {
+  late ProductUsecase mockProductUsecase;
+  late ProviderContainer container;
 
-//       // Verify that the widget tree is correctly built
-//       expect(find.byType(HomeView), findsOneWidget);
-//       expect(find.byType(AppBar), findsOneWidget);
-//       expect(find.byType(BottomNavigationBar), findsOneWidget);
-//     });
+  setUp(() {
+    mockProductUsecase = MockProductUsecase();
+    container = ProviderContainer(
+      overrides: [
+        productViewModelProvider.overrideWith(
+          (ref) => ProductViewmodel(productUsecase: mockProductUsecase),
+        ),
+      ],
+    );
+  });
 
-//     testWidgets('Gyroscope triggers dialog on threshold', (WidgetTester tester) async {
-//       // Mock Gyroscope events
-//       final mockEvent = MockGyroscopeEvent();
-//       when(mockEvent.x).thenReturn(6.0); // Set values to trigger the dialog
+  tearDown(() {
+    container.dispose();
+  });
 
-//       await tester.pumpWidget(
-//         ProviderScope(
-//           overrides: [
-//             gyroscopeEvents.overrideWithValue(Stream<GyroscopeEvent>.fromIterable([mockEvent])),
-//             themeProvider.notifier.overrideWithValue(mockNotifier),
-//           ],
-//           child: MaterialApp(
-//             home: HomeView(),
-//           ),
-//         ),
-//       );
+  test('getProducts should correctly handle new data', () async {
+    when(mockProductUsecase.pagination(any, any))
+        .thenAnswer((_) async => const Right([
+              ProductEntity(
+                id: '1',
+                productName: 'Product 1',
+                productPrice: 1000,
+                productImage: 'image1.jpg',
+                productDescription: 'Description 1',
+                productCategory: 'Category 1',
+              ),
+              ProductEntity(
+                id: '2',
+                productName: 'Product 2',
+                productPrice: 2000,
+                productImage: 'image2.jpg',
+                productDescription: 'Description 2',
+                productCategory: 'Category 2',
+              ),
+            ]));
 
-//       // Wait for dialog to appear
-//       await tester.pumpAndSettle();
+    final viewModel = container.read(productViewModelProvider.notifier);
+    await viewModel.getProducts();
 
-//       // Verify that the dialog is shown
-//       expect(find.byType(AwesomeDialog), findsOneWidget);
+    // Assertions to verify state changes
+    final state = container.read(productViewModelProvider);
+    expect(state.isLoading, false);
+    expect(state.products.isNotEmpty, true);
+    expect(state.products.length, 2);
+    expect(state.page, equals(1)); // Assuming initial page is 1
+  });
 
-//       // Simulate tapping the "OK" button on the dialog
-//       await tester.tap(find.text('OK'));
-//       await tester.pumpAndSettle();
+  test('getProducts should handle empty data by setting hasReachedMax to true', () async {
+    when(mockProductUsecase.pagination(any, any))
+        .thenAnswer((_) async => const Right([]));
 
-//       // Verify that the snackbar appears after dismissing the dialog
-//       expect(find.byType(SnackBar), findsOneWidget);
-//       expect(find.text('Logged Out Successfully!'), findsOneWidget);
-//     });
-//   });
-// }
+    final viewModel = container.read(productViewModelProvider.notifier);
+    await viewModel.getProducts();
 
-// class ThemeProvider {
-// }
+    // Assertions to verify handling of empty data
+    final state = container.read(productViewModelProvider);
+    expect(state.hasReachedMax, true);
+    expect(state.isLoading, false);
+    expect(state.products.isEmpty, true);
+  });
 
-// // Mock classes for testing
-// class MockThemeProvider extends Mock implements ThemeProvider {}
+  test('resetState should correctly reset the state and fetch initial data', () async {
+    when(mockProductUsecase.pagination(any, any)).thenAnswer(
+      (_) async => const Right([
+        ProductEntity(
+          id: '1',
+          productName: 'Product 1',
+          productPrice: 1000,
+          productImage: 'image1.jpg',
+          productDescription: 'Description 1',
+          productCategory: 'Category 1',
+        ),
+      ]),
+    );
 
-// class MockNotifierProvider<T> extends Mock implements ChangeNotifierProvider<T> {
-//   MockNotifierProvider(MockThemeProvider mockThemeProvider);
-// }
+    final viewModel = container.read(productViewModelProvider.notifier);
+
+    // Simulate state change before reset
+    await viewModel.getProducts();
+
+    // Reset the state
+    await viewModel.resetState();
+
+    // Assertions to verify state reset and fetching initial data
+    final state = container.read(productViewModelProvider);
+    expect(state.isLoading, isFalse);
+    expect(state.products.isNotEmpty, isTrue);
+    expect(state.products.length, 1);
+    expect(state.page, equals(1)); // State should be reset to initial page
+  });
+
+ 
+}
