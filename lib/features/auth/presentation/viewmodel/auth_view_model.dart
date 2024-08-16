@@ -23,19 +23,19 @@ class AuthViewModel extends StateNotifier<AuthState> {
   Future<void> registerUser(AuthEntity student) async {
     state = state.copyWith(isLoading: true);
     var data = await authUseCase.registerUser(student);
-    data.fold(
-      (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.error,
-        );
-        showMySnackBar(message: failure.error, backgroundColor: Colors.red);
-      },
-      (success) {
-        state = state.copyWith(isLoading: false, error: null);
-        showMySnackBar(message: "Successfully registered", backgroundColor: Colors.green);
-      },
-    );
+    // data.fold(
+    //   (failure) {
+    //     state = state.copyWith(
+    //       isLoading: false,
+    //       error: failure.error,
+    //     );
+    //     showMySnackBar(message: failure.error, backgroundColor: Colors.red);
+    //   },
+    //   (success) {
+    //     state = state.copyWith(isLoading: false, error: null);
+    //     showMySnackBar(message: "Successfully registered", backgroundColor: Colors.green);
+    //   },
+    // );
   }
 
   Future<void> loginUser(
