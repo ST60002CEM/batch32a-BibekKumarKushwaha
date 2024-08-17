@@ -20,6 +20,11 @@ class ProductRemoteRepository implements IProductRepository {
   Future<Either<Failure, List<ProductEntity>>> pagination(int page, int limit) {
     return productRemoteDataSource.pagination(page: page, limit: limit);
   }
+  // get single product
+  @override
+  Future<Either<Failure, ProductEntity>> getProductById(String id) {
+    return productRemoteDataSource.getSingleProduct(id);
+  }
   
   
 }

@@ -16,7 +16,11 @@ class ProductUsecase {
 
   ProductUsecase({required this.productRepository});
 
-  Future<Either<Failure, List<ProductEntity>>> pagination(int page, int limit)  {
-    return  productRepository.pagination(page, limit);
+  Future<Either<Failure, List<ProductEntity>>> pagination(int? page, int? limit)  {
+    return  productRepository.pagination(page??1, limit??10);
+  }
+    // get single product
+  Future<Either<Failure, ProductEntity>> getProductById(String id) {
+    return productRepository.getProductById(id);
   }
 }

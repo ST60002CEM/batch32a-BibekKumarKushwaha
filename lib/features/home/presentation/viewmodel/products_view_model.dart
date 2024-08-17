@@ -18,13 +18,13 @@ class ProductViewmodel extends StateNotifier<ProductState> {
 
   Future resetState() async {
     state = ProductState.initial();
-    getProducts();
+    await getProducts();
   }
 
   Future getProducts() async {
     state = state.copyWith(isLoading: true);
     final currentState = state;
-    final page = currentState.page + 1;
+    final page = currentState.page;
     final products = currentState.products;
     final hasReachedMax = currentState.hasReachedMax;
     if (!hasReachedMax) {
@@ -35,11 +35,11 @@ class ProductViewmodel extends StateNotifier<ProductState> {
             state = state.copyWith(hasReachedMax: true, isLoading: false),
         (data) {
           if (data.isEmpty) {
-            state = state.copyWith(hasReachedMax: true);
+            state = state.copyWith(hasReachedMax: true, isLoading: false);
           } else {
             state = state.copyWith(
               products: [...products, ...data],
-              page: page,
+              page: page+1,
               isLoading: false,
             );
           }

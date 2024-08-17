@@ -15,7 +15,7 @@ class AuthApiModel extends Equatable {
   final String? id;
   final String firstName;
   final String lastName;
-  final String phone;
+  final int phone;
 
   final String email;
   final String password;
@@ -33,7 +33,7 @@ class AuthApiModel extends Equatable {
       : id = '',
         firstName = '',
         lastName = '',
-        phone = '',
+        phone = 0,
         email = '',
         password = '';
   // To Entity

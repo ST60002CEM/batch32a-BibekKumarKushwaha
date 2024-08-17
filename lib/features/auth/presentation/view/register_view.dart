@@ -1,7 +1,7 @@
+
 import 'package:final_assignment/features/auth/domain/entity/auth_entity.dart';
 import 'package:final_assignment/features/auth/presentation/view/login_view.dart';
 import 'package:final_assignment/features/auth/presentation/viewmodel/auth_view_model.dart';
-import 'package:final_assignment/features/auth/presentation/widgets/ui_helper.dart';
 import 'package:final_assignment/features/auth/presentation/widgets/zizzag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +20,19 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _phoneController = TextEditingController(); // Added phone controller
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _phoneController.dispose(); // Dispose phone controller
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,6 +114,22 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       },
                     ),
                     const SizedBox(height: 16.0),
+                    buildTextField(
+                      controller: _phoneController, // Phone text field
+                      label: 'Phone Number',
+                      icon: Icons.phone,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                          return 'Please enter a valid phone number';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
                     buildPasswordField(
                       controller: _passwordController,
                       label: 'Password',
@@ -147,7 +176,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                           AuthEntity student = AuthEntity(
                               firstName: _firstNameController.text,
                               lastName: _lastNameController.text,
-                              phone: '1234567890',
+                              phone: int.tryParse( _phoneController.text)??0, // Use entered phone number
                               email: _emailController.text,
                               password: _passwordController.text);
 
@@ -230,6 +259,67 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      keyboardType: keyboardType,
+      validator: validator,
+    );
+  }
+
+  Widget buildPasswordField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      obscureText: true,
+      validator: validator,
+    );
+  }
+
+  Widget buildSocialLoginButton(String text, String asset, Color color, VoidCallback onPressed) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white, backgroundColor: color,
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        textStyle: const TextStyle(fontSize: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      icon: Image.asset(
+        asset,
+        height: 24.0,
+        width: 24.0,
+      ),
+      label: Text(text),
+      onPressed: onPressed,
     );
   }
 }
