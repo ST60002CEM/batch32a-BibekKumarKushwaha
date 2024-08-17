@@ -11,6 +11,6 @@ class Kpay {}
 
 mixin KpayRoute {
   openKhaltiView() {
-    NavigateRoute.pushRoute(const KhaltiPaymentView());
+    NavigateRoute.pushRoute(const KhaltiPaymentView(cartItems: [],));
   }
 }

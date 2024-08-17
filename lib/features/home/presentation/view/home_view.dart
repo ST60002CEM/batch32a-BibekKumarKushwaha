@@ -28,11 +28,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   final List<Widget> _screens = [
     const DashboardView(),
-    const WishlistView(),
+    const FavouriteView(),
     const CartView(),
     const ProfileView(),
-
   ];
+
   bool showYesNoDialog = true;
   bool isDialogShowing = false;
 
@@ -44,7 +44,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
     _streamSubscription.add(gyroscopeEvents!.listen((GyroscopeEvent event) {
       setState(() {
         _gyroscopeValues = <double>[event.x, event.y, event.z];
-
         _checkGyroscopeValues(_gyroscopeValues);
       });
     }));
@@ -104,7 +103,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: _onBackPressed,
               )
-            : null,
+            : SizedBox(width: AppBar().preferredSize.width), // Adds space if no leading icon
         title: Center(
           child: Image.asset(
             'assets/images/logo.png', // Replace with your logo path
@@ -112,14 +111,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             fit: BoxFit.contain,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.brightness_6),
-            onPressed: () {
-              themeNotifier.toggleTheme();
-            },
-          ),
-        ],
+      
       ),
       body: IndexedStack(
         index: _selectedIndex,
@@ -150,3 +142,4 @@ class _HomeViewState extends ConsumerState<HomeView> {
     );
   }
 }
+

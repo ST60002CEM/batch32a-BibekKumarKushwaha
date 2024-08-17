@@ -16,8 +16,8 @@ class LoginView extends ConsumerStatefulWidget {
 
 class _LoginViewState extends ConsumerState<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(text: 'bibek@gmail.com');
+  final _passwordController = TextEditingController(text: 'bibek123');
 
   @override
   Widget build(BuildContext context) {
@@ -133,16 +133,16 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           },
                           child: const Text('Log In'),
                         ),
-                        const SizedBox(height: 24.0),
-                        IconButton(
-                          icon: const Icon(Icons.fingerprint, size: 75),
-                          color: Colors.black,
-                          onPressed: () {
-                            ref
-                                .read(authViewModelProvider.notifier)
-                                .fingerPrintLogin();
-                          },
-                        ),
+                        // const SizedBox(height: 24.0),
+                        // IconButton(
+                        //   icon: const Icon(Icons.fingerprint, size: 75),
+                        //   color: Colors.black,
+                        //   onPressed: () {
+                        //     ref
+                        //         .read(authViewModelProvider.notifier)
+                        //         .fingerPrintLogin();
+                        //   },
+                        // ),
                         const SizedBox(height: 24.0),
                         TextButton(
                           onPressed: () {

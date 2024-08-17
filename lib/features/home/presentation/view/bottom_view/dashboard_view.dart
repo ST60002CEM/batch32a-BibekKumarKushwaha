@@ -1,6 +1,5 @@
 
 // import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:final_assignment/core/common/widgets/my_search_container.dart';
 // import 'package:final_assignment/features/cart/presentation/view_model/cart_view_model.dart';
 // import 'package:final_assignment/core/common/provider/theme_view_model_provider.dart';
 // import 'package:final_assignment/features/home/presentation/widgets/my_product_cart.dart';
@@ -8,7 +7,6 @@
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:final_assignment/features/home/presentation/viewmodel/products_view_model.dart';
 // import 'package:final_assignment/features/home/domain/entity/product_entity.dart';
-//  // Import your search container
 
 // class DashboardView extends ConsumerStatefulWidget {
 //   const DashboardView({super.key});
@@ -19,10 +17,13 @@
 
 // class _DashboardViewState extends ConsumerState<DashboardView> {
 //   final ScrollController _scrollController = ScrollController();
+//   final TextEditingController _searchController = TextEditingController();
+//   String _searchQuery = '';
 
 //   @override
 //   void dispose() {
 //     _scrollController.dispose();
+//     _searchController.dispose();
 //     super.dispose();
 //   }
 
@@ -30,6 +31,13 @@
 //   Widget build(BuildContext context) {
 //     final state = ref.watch(productViewModelProvider);
 //     final cartViewModel = ref.read(cartViewModelProvider.notifier);
+
+//     // Filter products based on search query
+//     final filteredProducts = state.products.where((product) {
+//       final productName = product.productName.toLowerCase();
+//       final query = _searchQuery.toLowerCase();
+//       return productName.contains(query);
+//     }).toList();
 
 //     return Scaffold(
 //       appBar: AppBar(
@@ -62,16 +70,11 @@
 //               children: [
 //                 _buildHeader(),
 //                 const SizedBox(height: 20),
-//                 const MySearchContainer(
-//                   text: 'Search products...',
-//                   icon: Icons.search,
-//                   showBackground: true,
-//                   showBorder: true,
-//                 ),
+//                 _buildSearchBar(),
 //                 const SizedBox(height: 20),
 //                 _buildProductCarousel(),
 //                 const SizedBox(height: 20),
-//                 _buildProductGrid(state, cartViewModel),
+//                 _buildProductGrid(filteredProducts, cartViewModel),
 //                 if (state.isLoading)
 //                   const Center(
 //                     child: CircularProgressIndicator(
@@ -111,6 +114,24 @@
 //     );
 //   }
 
+//   Widget _buildSearchBar() {
+//     return TextField(
+//       controller: _searchController,
+//       onChanged: (query) {
+//         setState(() {
+//           _searchQuery = query;
+//         });
+//       },
+//       decoration: InputDecoration(
+//         hintText: 'Search products...',
+//         prefixIcon: const Icon(Icons.search),
+//         border: OutlineInputBorder(),
+//         filled: true,
+//         fillColor: Colors.grey[200],
+//       ),
+//     );
+//   }
+
 //   Widget _buildProductCarousel() {
 //     return CarouselSlider(
 //       options: CarouselOptions(
@@ -143,8 +164,8 @@
 //     );
 //   }
 
-//   Widget _buildProductGrid(dynamic state, CartViewModel cartViewModel) {
-//     if (state.products.isEmpty) {
+//   Widget _buildProductGrid(List<ProductEntity> products, CartViewModel cartViewModel) {
+//     if (products.isEmpty) {
 //       return const Center(child: Text('No products available.'));
 //     }
 
@@ -157,9 +178,9 @@
 //         mainAxisSpacing: 8,
 //         childAspectRatio: 0.75,
 //       ),
-//       itemCount: state.products.length,
+//       itemCount: products.length,
 //       itemBuilder: (context, index) {
-//         final product = state.products[index];
+//         final product = products[index];
 //         return MyCard(
 //           productEntity: product,
 //           onPressed: () {
@@ -171,7 +192,6 @@
 //   }
 // }
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:final_assignment/core/common/widgets/my_search_container.dart'; // Ensure this is updated or replaced with CustomSearchBar if needed
 import 'package:final_assignment/features/cart/presentation/view_model/cart_view_model.dart';
 import 'package:final_assignment/core/common/provider/theme_view_model_provider.dart';
 import 'package:final_assignment/features/home/presentation/widgets/my_product_cart.dart';
@@ -179,6 +199,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:final_assignment/features/home/presentation/viewmodel/products_view_model.dart';
 import 'package:final_assignment/features/home/domain/entity/product_entity.dart';
+
+// Add a provider for user data
+final userProvider = Provider<String>((ref) {
+  // Replace this with the actual implementation to get the user's name
+  return 'Bibek'; // Example static value, replace with dynamic data from your provider
+});
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
@@ -203,6 +229,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   Widget build(BuildContext context) {
     final state = ref.watch(productViewModelProvider);
     final cartViewModel = ref.read(cartViewModelProvider.notifier);
+    final userName = ref.watch(userProvider); // Get the user's name from the provider
 
     // Filter products based on search query
     final filteredProducts = state.products.where((product) {
@@ -240,7 +267,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             child: ListView(
               controller: _scrollController,
               children: [
-                _buildHeader(),
+                _buildHeader(userName), // Pass the user's name to the header
                 const SizedBox(height: 20),
                 _buildSearchBar(),
                 const SizedBox(height: 20),
@@ -261,22 +288,22 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     );
   }
 
-  Widget _buildHeader() {
-    return const Row(
+  Widget _buildHeader(String userName) {
+    return Row(
       children: [
-        CircleAvatar(
+        const CircleAvatar(
           radius: 30,
           backgroundImage: AssetImage('assets/images/profile_picture.png'),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hello, Bibek!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              'Hello, $userName!', // Use the dynamic user name here
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            Text(
+            const Text(
               'Welcome back!',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
